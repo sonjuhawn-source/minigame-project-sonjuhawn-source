@@ -64,6 +64,17 @@ public class LeaderboardManager : MonoBehaviour
         {
             Debug.Log($"[Leaderboard] 시도");
 
+            // userId를 키로 써서 계정당 한 칸만 차지하게 한다
+            DatabaseReference userEntry = leaderboardRef.Child(userId);
+            DataSnapshot previous = await userEntry.GetValueAsync();
+
+            if (previous.Exists && previous.Child("clearTime").Value != null
+                && Convert.ToSingle(previous.Child("clearTime").Value) <= clearTime)
+            {
+                Debug.Log($"[Leaderboard] 기존 기록이 더 빠름 — 갱신하지 않음");
+                return (true, null);
+            }
+
             Dictionary<string, object> entryData = new Dictionary<string, object>
             {
                 {"userId", userId},
@@ -72,7 +83,7 @@ public class LeaderboardManager : MonoBehaviour
                 {"timestamp", ServerValue.Timestamp}
             };
 
-            await leaderboardRef.Push().SetValueAsync(entryData);
+            await userEntry.SetValueAsync(entryData);
             Debug.Log($"[Leaderboard] 성공");
             return (true, null);
         }
