@@ -4,13 +4,10 @@ using UnityEngine;
 public class StartPanel : MonoBehaviour
 {
     [SerializeField] private GameObject panel;
-    [SerializeField] private WaveManager waveManager;
-    [SerializeField] private CameraTargetFollow cameraFollow;
     [SerializeField] private Transform menuCameraPoint;
     [SerializeField] private CinemachineCamera gameCamera;
     [SerializeField] private GameObject hudCanvas;
     [SerializeField] private GameObject loginPanel;
-    [SerializeField] private ProfileUI profileUI;
 
     public bool IsGameStarted { get; private set; } = false;
 

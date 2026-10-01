@@ -10,7 +10,6 @@ public class OptionPanel : MonoBehaviour
     [SerializeField] private Slider sensitivitySlider;
     [SerializeField] private Slider bgmSlider;
     [SerializeField] private Slider sfxSlider;
-    [SerializeField] private Toggle muteToggle;
 
     [SerializeField] private float defaultSensitivity = 1f;
     [SerializeField] private float defaultBGMVolume = 0.5f;

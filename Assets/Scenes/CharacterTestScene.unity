@@ -2919,13 +2919,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StartPanel
   panel: {fileID: 158883768}
-  waveManager: {fileID: 1616530446}
-  cameraFollow: {fileID: 719606665}
   menuCameraPoint: {fileID: 1421285196}
   gameCamera: {fileID: 1489624078}
   hudCanvas: {fileID: 1867883243}
   loginPanel: {fileID: 513820226}
-  profileUI: {fileID: 0}
 --- !u!114 &158883771
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12007,17 +12004,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 709213452}
   m_CullTransparentMesh: 1
---- !u!114 &719606665 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1395473091376830839, guid: 1d9c465c8ea972f4fb3272e740325228, type: 3}
-  m_PrefabInstance: {fileID: 967016830680335313}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34697f3c66b7e914f99ca13f14d79457, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CameraTargetFollow
 --- !u!1 &720768622
 GameObject:
   m_ObjectHideFlags: 0
@@ -20875,7 +20861,6 @@ MonoBehaviour:
   sensitivitySlider: {fileID: 501828783}
   bgmSlider: {fileID: 237655350}
   sfxSlider: {fileID: 2116678181}
-  muteToggle: {fileID: 305287977}
   defaultSensitivity: 1
   defaultBGMVolume: 0.5
   defaultSFXVolume: 0.5
@@ -26758,10 +26743,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaveManager
   waves:
-  - {fileID: 11400000, guid: 9a2db867c9e21c54782674d5c03a1bf3, type: 2}
-  - {fileID: 11400000, guid: a9c218d0cafbfcf4c98655c8c7eaa68a, type: 2}
-  - {fileID: 11400000, guid: fd1aae79787363944a6fb436778527d3, type: 2}
-  - {fileID: 11400000, guid: dd7c1c635faddb542a4dc189cc1f4248, type: 2}
   - {fileID: 11400000, guid: 5b477ef797d190844b6facfe51b9e434, type: 2}
   spawnPoints: []
   Panelroot: {fileID: 1285253219}
