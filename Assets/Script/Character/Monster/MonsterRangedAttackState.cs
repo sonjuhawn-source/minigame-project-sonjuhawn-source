@@ -16,10 +16,7 @@ public class MonsterRangedAttackState : IMonsterState
         if (ctx.Target == null) return;
         ctx.FacePlayer();
 
-        float distance = Vector3.Distance(ctx.transform.position, ctx.Target.position);
-        if (ctx.Data.kiteDistance > 0f && distance < ctx.Data.kiteDistance)
-            ctx.Retreat();
-
+        // 회복 중에는 제자리에서 기다린다. 후퇴는 Chase로 돌아간 뒤에 처리한다.
         if (Time.time >= endTime)
             ctx.ChangeState(new MonsterChaseState());
     }
