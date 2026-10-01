@@ -30,7 +30,11 @@ public class DamagePopup : MonoBehaviour
         {
             Camera cam = Camera.main;
             if (cam == null)
+            {
+                // 카메라가 없으면 더 움직일 수 없다. 남겨두면 화면에 그대로 박히므로 정리한다.
+                Destroy(gameObject);
                 return;
+            }
 
             elapsed += Time.deltaTime;
             Vector3 screenPos = cam.WorldToScreenPoint(worldPos);

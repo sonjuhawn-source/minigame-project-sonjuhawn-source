@@ -73,6 +73,10 @@ public class LeaderboardUI : MonoBehaviour
 
         List<LeaderboardEntry> entries = await LeaderboardManager.Instance.LoadLeaderboardAsync();
 
+        // 조회를 기다리는 동안 패널이 파괴됐을 수 있다
+        if (this == null || entryContainer == null || entryPrefab == null)
+            return;
+
         for (int i = 0; i < entries.Count; i++)
         {
             GameObject entry = Instantiate(entryPrefab, entryContainer);
