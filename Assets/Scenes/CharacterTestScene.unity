@@ -14383,7 +14383,7 @@ MonoBehaviour:
     m_Right: 20
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
+  m_ChildAlignment: 3
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
@@ -25715,7 +25715,7 @@ MonoBehaviour:
   leaderboardPanel: {fileID: 790888967}
   closeButton: {fileID: 1461156993}
   entryContainer: {fileID: 815235627}
-  entryPrefab: {fileID: 3773888401440983340, guid: eac0310c7a229604f85a3867fa9fdb70, type: 3}
+  entryPrefab: {fileID: 548964169011404342, guid: b4561b51add43ce4694c6406bc7a7bb2, type: 3}
 --- !u!224 &1544545491
 RectTransform:
   m_ObjectHideFlags: 0
