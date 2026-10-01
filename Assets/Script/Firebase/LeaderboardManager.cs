@@ -71,7 +71,16 @@ public class LeaderboardManager : MonoBehaviour
             if (previous.Exists && previous.Child("clearTime").Value != null
                 && Convert.ToSingle(previous.Child("clearTime").Value) <= clearTime)
             {
-                Debug.Log($"[Leaderboard] 기존 기록이 더 빠름 — 갱신하지 않음");
+                // 기록은 그대로 두되, 그 사이 닉네임이 바뀌었으면 표시명만 맞춘다
+                if (previous.Child("displayName").Value as string != displayName)
+                {
+                    await userEntry.Child("displayName").SetValueAsync(displayName);
+                    Debug.Log($"[Leaderboard] 기존 기록이 더 빠름 — 표시명만 갱신: {displayName}");
+                }
+                else
+                {
+                    Debug.Log($"[Leaderboard] 기존 기록이 더 빠름 — 갱신하지 않음");
+                }
                 return (true, null);
             }
 
