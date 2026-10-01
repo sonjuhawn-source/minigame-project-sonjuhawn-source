@@ -18,8 +18,14 @@ public class LeaderboardUI : MonoBehaviour
         closeButton.onClick.AddListener(Close);
         leaderboardPanel.SetActive(false);
 
-        await UniTask.WaitUntil(() => LeaderboardManager.Instance != null && LeaderboardManager.Instance.IsReady);
-        await UniTask.WaitUntil(() => AuthManager.Instance != null);
+        // 패널이 파괴되면 대기를 취소한다 — 파괴된 참조 접근 방지
+        var ct = this.GetCancellationTokenOnDestroy();
+        if (await UniTask.WaitUntil(() => LeaderboardManager.Instance != null && LeaderboardManager.Instance.IsReady,
+                cancellationToken: ct).SuppressCancellationThrow())
+            return;
+        if (await UniTask.WaitUntil(() => AuthManager.Instance != null,
+                cancellationToken: ct).SuppressCancellationThrow())
+            return;
 
         AuthManager.Instance.LoginStateChagned += OnLoginStateChanged;
         subscribed = true;
@@ -44,7 +50,9 @@ public class LeaderboardUI : MonoBehaviour
 
     private async UniTaskVoid OpenAsync()
     {
-        await UniTask.WaitUntil(() => LeaderboardManager.Instance != null && LeaderboardManager.Instance.IsReady);
+        if (await UniTask.WaitUntil(() => LeaderboardManager.Instance != null && LeaderboardManager.Instance.IsReady,
+                cancellationToken: this.GetCancellationTokenOnDestroy()).SuppressCancellationThrow())
+            return;
         await LoadAndDisplayAsync();  // 최신 데이터로 갱신
         leaderboardPanel.SetActive(true);
     }
