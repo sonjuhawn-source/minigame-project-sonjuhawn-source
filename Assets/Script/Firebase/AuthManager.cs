@@ -143,6 +143,13 @@ public class AuthManager : MonoBehaviour
     {
         Debug.LogWarning($"[Auth] Firebase 에러 원문: {error}");
 
+        // 오프라인이면 Firebase가 돌려주는 메시지와 무관하게 네트워크 문제로 안내한다.
+        // 초기화는 로컬 설정만 읽어 성공하므로, 단절은 이 단계에서야 드러난다.
+        if (Application.internetReachability == NetworkReachability.NotReachable)
+        {
+            return "네트워크 연결을 확인해주세요.";
+        }
+
         string lower = error.ToLowerInvariant();
 
         if (lower.Contains("already in use") || lower.Contains("email-already"))
@@ -157,7 +164,8 @@ public class AuthManager : MonoBehaviour
         {
             return "이메일 형식이 올바르지 않습니다.";
         }
-        if (lower.Contains("network"))
+        if (lower.Contains("network") || lower.Contains("timeout") || lower.Contains("unreachable")
+            || lower.Contains("connection"))
         {
             return "네트워크 연결을 확인해주세요.";
         }

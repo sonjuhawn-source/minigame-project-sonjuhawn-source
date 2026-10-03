@@ -32,10 +32,16 @@ public class StatDistributionPanel : MonoBehaviour
         stats.OnStatChanged -= Refresh;
     }
 
+    // OnLevelUp은 레벨당 한 번 오므로 한 프레임에 2레벨이 오르면 두 번 불린다.
+    // 그때 Pause를 두 번 쌓으면 확인(Resume 1회)으로 pauseCount가 0에 닿지 못해
+    // 패널만 닫히고 timeScale이 0에 묶인다. 열려 있으면 포인트만 갱신한다.
     private void HandleLevelUp(int newLevel)
     {
-        panelRoot.SetActive(true);
-        PauseManager.Instance.Pause();
+        if (!panelRoot.activeSelf)
+        {
+            panelRoot.SetActive(true);
+            PauseManager.Instance.Pause();
+        }
         Refresh();
     }
 

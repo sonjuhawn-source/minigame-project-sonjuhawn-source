@@ -42,6 +42,7 @@ public class ProfileEditUI : MonoBehaviour
     private TextMeshProUGUI editErrorText;
 
     [Header("References")]
+    [Tooltip("선택 사항 — 연결하면 닉네임 변경 직후 표시를 갱신한다")]
     [SerializeField]
     private ProfileUI profileUI;
 
@@ -51,13 +52,34 @@ public class ProfileEditUI : MonoBehaviour
         updateButton.onClick.AddListener(() => OnUpdateButtonClicked().Forget());
         closeEditButton.onClick.AddListener(OnCloseEditButtonClicked);
 
-        profileEditPanel.SetActive(false);
+        CloseEditPanel();
+    }
+
+    // 이 스크립트가 profileEditPanel 자신에 붙어 있으면 SetActive(false)가
+    // 컴포넌트까지 꺼버려 버튼 이벤트를 받지 못한다. 그래서 자식만 닫는다.
+    private void CloseEditPanel()
+    {
+        createProfilePanel.SetActive(false);
+        editProfilePanel.SetActive(false);
+
+        if (profileEditPanel != gameObject)
+            profileEditPanel.SetActive(false);
+    }
+
+    // 버튼 OnClick에 연결하는 진입점 — UniTaskVoid는 Inspector 목록에 뜨지 않는다
+    public void OpenProfileEdit()
+    {
+        OpenProfileEditPanelAsync().Forget();
     }
 
     public async UniTaskVoid OpenProfileEditPanelAsync()
     {
         profileEditPanel.SetActive(true);
         var (profile, _) = await ProfileManager.Instance.LoadProfileAsync();
+
+        // 조회를 기다리는 동안 패널이 파괴됐을 수 있다
+        if (this == null || profileEditPanel == null)
+            return;
 
         if (profile != null)
         {
@@ -107,8 +129,8 @@ public class ProfileEditUI : MonoBehaviour
             createErrorText.color = Color.green;
 
             await UniTask.Delay(1000, cancellationToken: this.GetCancellationTokenOnDestroy());
-            profileEditPanel.SetActive(false);
-            profileUI.UpdateProfileUIAsync().Forget();
+            CloseEditPanel();
+            RefreshProfileDisplay();
         }
         else
         {
@@ -140,7 +162,7 @@ public class ProfileEditUI : MonoBehaviour
             currentNicknameText.text = $"현재 닉네임: {nickname}";
 
             await UniTask.Delay(1000, cancellationToken: this.GetCancellationTokenOnDestroy());
-            profileUI.UpdateProfileUIAsync().Forget();
+            RefreshProfileDisplay();
         }
         else
         {
@@ -153,6 +175,13 @@ public class ProfileEditUI : MonoBehaviour
 
     private void OnCloseEditButtonClicked()
     {
-        profileEditPanel.SetActive(false);
+        CloseEditPanel();
+    }
+
+    // profileUI는 선택 사항이라 연결되지 않았으면 건너뛴다
+    private void RefreshProfileDisplay()
+    {
+        if (profileUI != null)
+            profileUI.UpdateProfileUIAsync().Forget();
     }
 }

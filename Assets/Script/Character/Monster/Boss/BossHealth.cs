@@ -24,7 +24,15 @@ public class BossHealth : MonoBehaviour, IDamageable
     private void Awake()
     {
         currentHp = MaxHp;
-        damageCanvas = GameObject.Find("PopUpCanvas").transform;
+
+        if (damageCanvas == null)
+        {
+            // 씬에 PopUpCanvas가 없거나 비활성이면 Find가 null을 돌려준다
+            var popUpCanvas = GameObject.Find("PopUpCanvas");
+            damageCanvas = popUpCanvas != null
+                ? popUpCanvas.transform
+                : FindAnyObjectByType<Canvas>()?.transform;
+        }
     }
 
     public void TakeDamage(int amount)
@@ -46,8 +54,10 @@ public class BossHealth : MonoBehaviour, IDamageable
         else
             OnDamaged?.Invoke();
 
-        var canvas = FindAnyObjectByType<Canvas>();
+        if (damagePopupPrefab == null || damageCanvas == null)
+            return;
+
         var popup = Instantiate(damagePopupPrefab, damageCanvas);
-        popup.GetComponent<DamagePopup>().Init(amount, transform.position); ;
+        popup.GetComponent<DamagePopup>().Init(amount, transform.position);
     }
 }

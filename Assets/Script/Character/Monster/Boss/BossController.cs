@@ -95,7 +95,21 @@ public class BossController : MonoBehaviour
     {
         enabled = false;
 
+        GrantRewards();
         bb.anim.SetTrigger("Die");
+    }
+
+    // 일반 몬스터와 같은 방식으로 보상을 지급한다 (MonsterController.HandleDeath 참고)
+    private void GrantRewards()
+    {
+        if (bb.target == null)
+            return;
+
+        if (bb.target.TryGetComponent<ExperienceSystem>(out var exp))
+            exp.AddExp(data.expReward);
+
+        if (bb.target.TryGetComponent<GoldSystem>(out var gold))
+            gold.AddGold(data.goldReward);
     }
 
     // 공격 쿨다운 코루틴

@@ -21,17 +21,29 @@ public class DamagePopup : MonoBehaviour
 
     private async UniTaskVoid AnimateAndDestroyAsync()
     {
+        // 오브젝트가 파괴되면 대기를 취소한다 — 파괴된 RectTransform 접근 방지
+        var ct = this.GetCancellationTokenOnDestroy();
         float elapsed = 0f;
         Color color = damageText.color;
 
         while (elapsed < lifetime)
         {
+            Camera cam = Camera.main;
+            if (cam == null)
+            {
+                // 카메라가 없으면 더 움직일 수 없다. 남겨두면 화면에 그대로 박히므로 정리한다.
+                Destroy(gameObject);
+                return;
+            }
+
             elapsed += Time.deltaTime;
-            Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
+            Vector3 screenPos = cam.WorldToScreenPoint(worldPos);
             rectTransform.position = screenPos + Vector3.up * (riseSpeed * elapsed);
             color.a = 1f - (elapsed / lifetime);
             damageText.color = color;
-            await UniTask.Yield();
+
+            if (await UniTask.Yield(ct).SuppressCancellationThrow())
+                return;
         }
         Destroy(gameObject);
     }
