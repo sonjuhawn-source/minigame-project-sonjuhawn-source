@@ -10,7 +10,6 @@ public class BossData : ScriptableObject
     public float moveSpeed = 3f;
 
     [Header("AI 범위")]
-    public float detectRange = 15f;
     public float attackRange = 2f;
     public float attackCooldown = 2f;
 
