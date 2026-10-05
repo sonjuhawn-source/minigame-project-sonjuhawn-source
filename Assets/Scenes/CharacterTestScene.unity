@@ -28872,6 +28872,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaveManager
   waves:
+  - {fileID: 11400000, guid: 9a2db867c9e21c54782674d5c03a1bf3, type: 2}
+  - {fileID: 11400000, guid: a9c218d0cafbfcf4c98655c8c7eaa68a, type: 2}
+  - {fileID: 11400000, guid: fd1aae79787363944a6fb436778527d3, type: 2}
+  - {fileID: 11400000, guid: dd7c1c635faddb542a4dc189cc1f4248, type: 2}
   - {fileID: 11400000, guid: 5b477ef797d190844b6facfe51b9e434, type: 2}
   spawnPoints: []
   Panelroot: {fileID: 1285253219}
