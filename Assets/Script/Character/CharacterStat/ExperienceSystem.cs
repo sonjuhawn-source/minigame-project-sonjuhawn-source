@@ -7,7 +7,7 @@ public class ExperienceSystem : MonoBehaviour
     [SerializeField] private int currentExp;
     [SerializeField] private int currentLevel = 1;
     [SerializeField] private int pendingPoints = 0;
-    [SerializeField] private int pointsPerLevel = 3;
+    [SerializeField] private int pointsPerLevel = 2;
 
     private PlayerStats stats;
 

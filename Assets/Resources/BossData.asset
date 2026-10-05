@@ -16,7 +16,6 @@ MonoBehaviour:
   maxHp: 800
   attackPower: 20
   moveSpeed: 3
-  detectRange: 20
   attackRange: 2
   attackCooldown: 2.5
   chargeRange: 8
