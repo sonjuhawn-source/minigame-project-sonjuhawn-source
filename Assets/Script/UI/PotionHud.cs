@@ -21,7 +21,6 @@ public class PotionHud : MonoBehaviour
 
     private void Update()
     {
-        // 쿨타임 fill 업데이트
         potionIcon.fillAmount = potion.CooldownProgress;
     }
 

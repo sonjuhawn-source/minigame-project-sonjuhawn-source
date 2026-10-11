@@ -19,7 +19,6 @@ public class CharacterStateMachine : MonoBehaviour
 
     public event Action<PlayerState> OnStateChanged;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         ChangeState(PlayerState.Idle);

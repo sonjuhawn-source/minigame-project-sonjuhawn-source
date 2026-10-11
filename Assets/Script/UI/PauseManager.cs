@@ -1,6 +1,8 @@
-// PauseManager 싱글톤
 using UnityEngine;
 
+// 겹친 UI를 bool 하나로 관리하면 상점만 닫아도 스탯창이 열린 채 게임이 재개된다.
+// 카운터로 두고 마지막 UI가 닫힐 때(pauseCount == 0)만 timeScale을 되돌린다.
+// 호출: ShopSystem · StatDistributionPanel · PauseUI
 public class PauseManager : MonoBehaviour
 {
     public static PauseManager Instance { get; private set; }
