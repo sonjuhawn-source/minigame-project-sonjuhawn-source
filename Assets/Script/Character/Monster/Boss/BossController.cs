@@ -13,7 +13,6 @@ public class BossController : MonoBehaviour
 
     private void Start()
     {
-        // bb 초기화
         bb = new BossBlackboard
         {
             self = transform,

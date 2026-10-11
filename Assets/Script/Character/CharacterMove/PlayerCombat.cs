@@ -113,6 +113,8 @@ public class PlayerCombat : MonoBehaviour
         stats.OnStatChanged -= RecalculateAnimSpeed;
     }
 
+    // 소비되지 않은 Animator 트리거가 남아 회피 직후 공격이 튀어나오던 문제가 있었다.
+    // 하나를 세울 때 나머지를 전부 리셋해 잔존 트리거를 차단한다.
     private void SetTriggerExclusive(int hash)
     {
         for (int i = 0; i < ActionTriggers.Length; i++)
@@ -123,6 +125,9 @@ public class PlayerCombat : MonoBehaviour
         anim.SetTrigger(hash);
     }
 
+    // 플레이어는 Damaged 상태로 들어가지 않는다 — 다수 피격 시 스턴락이 생겨 의도적으로 뺐다.
+    // (PlayerState.Damaged는 enum 5번이지만 Animator의 targetState는 0~4만 쓴다)
+    // 아래 Damaged 검사는 되살릴 때를 대비해 둔 게이트이며 현재는 항상 false다.
     private void HandleAttack()
     {
         if (state.CurrentState == PlayerState.Dodging ||

@@ -35,7 +35,7 @@ public class ProfileManager : MonoBehaviour
     {
         if(!await FirebaseInitializer.Instance.WaitForInitializationAsync())
         {
-            Debug.Log("[Profile] 파이어 베이스 초기화 실패 Profile 초기화 불가...");
+            Debug.LogError("[Profile] Firebase 초기화 실패 — Profile 초기화 불가");
             return;
         }
 
@@ -43,7 +43,7 @@ public class ProfileManager : MonoBehaviour
         usersRef = databaseRef.Child("users");
 
         isInitialized = true;
-        Debug.Log("[Profile] 파이어 베이스 초기화 완료");
+        Debug.Log("[Profile] Firebase 초기화 완료");
     }
 
     public async UniTask<(bool success, string error)> SaveProfileAsync(string nickname)
@@ -58,20 +58,18 @@ public class ProfileManager : MonoBehaviour
 
         try
         {
-            Debug.LogError($"[Profile] 프로필 저장 시도");
-
-            UserProfile propile = new UserProfile(nickname, email);
-            string json = propile.ToJson();
+            UserProfile profile = new UserProfile(nickname, email);
+            string json = profile.ToJson();
 
             await usersRef.Child(userId).SetRawJsonValueAsync(json);
-            cachedProfile = propile;
+            cachedProfile = profile;
 
-            Debug.LogError($"[Profile] 프로필 저장 성공");
+            Debug.Log("[Profile] 프로필 저장 성공");
             return (true, null);
         }
         catch(Exception ex)
         {
-            Debug.LogError($"[Profile] 프로필 저장 실패 {ex.Message}");
+            Debug.LogError($"[Profile] 프로필 저장 실패: {ex.Message}");
             return(false, ex.Message);
         }
     }
@@ -82,13 +80,11 @@ public class ProfileManager : MonoBehaviour
 
         try
         {
-            Debug.Log($"[Profile] 프로필 저장 시도");
-
             DataSnapshot snapshot = await usersRef.Child(userId).GetValueAsync();
 
             if (!snapshot.Exists)
             {
-                Debug.Log($"[Profile] 프로필 없음");
+                Debug.Log("[Profile] 프로필 없음");
                 return (null, "프로필이 존재하지 않습니다");
             }
 
@@ -96,12 +92,12 @@ public class ProfileManager : MonoBehaviour
             UserProfile profile = UserProfile.FromJson(json);
             cachedProfile = profile;
 
-            Debug.Log($"[Profile] 프로필 로드 성공 {profile.nickname}");
+            Debug.Log($"[Profile] 프로필 로드 성공: {profile.nickname}");
             return (profile, null);
         }
         catch (Exception ex)
         {
-            Debug.Log($"[Profile] 프로필 저장 실패 {ex.Message}");
+            Debug.LogError($"[Profile] 프로필 로드 실패: {ex.Message}");
             return (null, ex.Message);
         }
     }
@@ -117,17 +113,15 @@ public class ProfileManager : MonoBehaviour
 
         try
         {
-            Debug.Log($"[Profile] 닉네임 수정 시도");
-
             await usersRef.Child(userId).Child("nickname").SetValueAsync(nickname);
             cachedProfile.nickname = nickname;
 
-            Debug.Log($"[Profile] 닉네임 수정 성공");
+            Debug.Log("[Profile] 닉네임 수정 성공");
             return (true, null);
         }
         catch (Exception ex)
         {
-            Debug.Log($"[Profile] 닉네임 수정 실패 {ex.Message}");
+            Debug.LogWarning($"[Profile] 닉네임 수정 실패: {ex.Message}");
             return (false, ex.Message);
         }
     }

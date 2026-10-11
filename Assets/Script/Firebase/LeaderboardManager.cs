@@ -62,8 +62,6 @@ public class LeaderboardManager : MonoBehaviour
 
         try
         {
-            Debug.Log($"[Leaderboard] 시도");
-
             // userId를 키로 써서 계정당 한 칸만 차지하게 한다
             DatabaseReference userEntry = leaderboardRef.Child(userId);
             DataSnapshot previous = await userEntry.GetValueAsync();
@@ -79,7 +77,7 @@ public class LeaderboardManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log($"[Leaderboard] 기존 기록이 더 빠름 — 갱신하지 않음");
+                    Debug.Log("[Leaderboard] 기존 기록이 더 빠름 — 갱신하지 않음");
                 }
                 return (true, null);
             }
@@ -93,19 +91,18 @@ public class LeaderboardManager : MonoBehaviour
             };
 
             await userEntry.SetValueAsync(entryData);
-            Debug.Log($"[Leaderboard] 성공");
+            Debug.Log("[Leaderboard] 저장 성공");
             return (true, null);
         }
         catch (Exception ex)
         {
-            Debug.LogError($"[Leaderboard] 저장실패: {ex.Message}");
+            Debug.LogError($"[Leaderboard] 저장 실패: {ex.Message}");
             return (false, ex.Message);
         }
     }
 
     public async UniTask<List<LeaderboardEntry>> LoadLeaderboardAsync(int limit = 5)
     {
-        Debug.Log($"[Leaderboard] leaderboardRef null여부: {leaderboardRef == null}");
         if (leaderboardRef == null)
         {
             return new List<LeaderboardEntry>();
@@ -115,7 +112,6 @@ public class LeaderboardManager : MonoBehaviour
         {
             Query query = leaderboardRef.OrderByChild("clearTime").LimitToFirst(limit);
             DataSnapshot snapshot = await query.GetValueAsync();
-            Debug.Log($"[Leaderboard] snapshot 존재: {snapshot.Exists}, 자식 수: {snapshot.ChildrenCount}");
             List<LeaderboardEntry> leaderboard = ParseEntries(snapshot);
             Debug.Log($"[Leaderboard] 로드 성공: {leaderboard.Count}개");
             return leaderboard;
@@ -143,7 +139,6 @@ public class LeaderboardManager : MonoBehaviour
                     entry.clearTime = float.Parse(child.Child("clearTime").Value?.ToString() ?? "0", System.Globalization.CultureInfo.InvariantCulture);
                     entry.timestamp = long.Parse(child.Child("timestamp").Value?.ToString() ?? "0");
                     list.Add(entry);
-                    Debug.Log($"[Leaderboard] 파싱: {entry.displayName} {entry.clearTime}");
                 }
                 catch (Exception ex)
                 {

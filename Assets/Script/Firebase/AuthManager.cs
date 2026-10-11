@@ -66,19 +66,17 @@ public class AuthManager : MonoBehaviour
             return;
 
         lastNotifiedSignedIn = signedIn;
-        Debug.Log(signedIn ? $"[Auth] 로그인 상태: {UserId}" : "[Auth] 로그아웃 상태");
+        Debug.Log(signedIn ? "[Auth] 로그인 상태" : "[Auth] 로그아웃 상태");
         LoginStateChagned?.Invoke(signedIn);
     }
     public async UniTask<(bool success, string error)> SignInAnonymouslyAsync()
     {
         try
         {
-            Debug.Log("[Auth] 익명 로그인 시도...");
-
             AuthResult result = await auth.SignInAnonymouslyAsync();
             currentUser = result.User;
 
-            Debug.Log($"[Auth] 익명 로그인 성공: {currentUser.UserId}");
+            Debug.Log("[Auth] 익명 로그인 성공");
             return (true, null);
         }
         catch (Exception ex)
@@ -93,13 +91,11 @@ public class AuthManager : MonoBehaviour
     {
         try
         {
-            Debug.Log("[Auth] 회원 가입 시도...");
-
             AuthResult result = await auth.CreateUserWithEmailAndPasswordAsync(email, password);
             currentUser = result.User;
             NotifyLoginState();
 
-            Debug.Log($"[Auth] 회원 가입 성공: {currentUser.UserId}");
+            Debug.Log("[Auth] 회원 가입 성공");
             return (true, null);
         }
         catch (Exception ex)
@@ -112,13 +108,11 @@ public class AuthManager : MonoBehaviour
     {
         try
         {
-            Debug.Log("[Auth] 로그인 시도...");
-
             AuthResult result = await auth.SignInWithEmailAndPasswordAsync(email, password);
             currentUser = result.User;
             NotifyLoginState();
 
-            Debug.Log($"[Auth] 로그인 성공: {currentUser.UserId}");
+            Debug.Log("[Auth] 로그인 성공");
             return (true, null);
         }
         catch (Exception ex)

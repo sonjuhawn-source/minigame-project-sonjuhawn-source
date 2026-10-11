@@ -112,7 +112,7 @@ public class WaveManager : MonoBehaviour
 
         if (spawnPoints == null || spawnPoints.Length == 0)
         {
-            Debug.LogError("No spawn points!");
+            Debug.LogError("[Wave] 스폰 포인트가 없습니다");
             return;
         }
 
